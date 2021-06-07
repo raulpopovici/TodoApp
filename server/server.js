@@ -1,0 +1,18 @@
+const express = require("express");
+const cors = require("cors");
+const userRouter = require("./routes/users");
+
+const app = express();
+
+app.use(express.json());
+app.use(cors());
+
+
+
+app.get("/", (req,res)=> {return res.status(200).send({hello: "HEllo"})})
+
+app.use("/api",userRouter);
+
+app.listen(5000,()=>{
+    console.log("Server running on port 5000")
+});
