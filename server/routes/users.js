@@ -2,6 +2,7 @@ const {Router} = require("express");
 const pool = require("../database/config")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken");
+const cookie = require("cookie");
 
 
 function validateEmail(email) {
@@ -27,8 +28,6 @@ const createUser = async (req,res) =>{
                 error:"pass does not match"
             })
         }
-        console.log("error")
-
         if(validateEmail(email)===false){
             return res.status(400).send({
                 error:"email is not valid"
@@ -58,7 +57,7 @@ const login = async(req,res) => {
 
     try {
 
-        const dbRes = await pool.query("SELECT * FROM users WHERE username = $1",[username]);
+        const dbRes = await pool.query("SELECT user_id,username,email FROM users WHERE username = $1",[username]);
         const user = dbRes.rows[0];
         const hashPassword = await bcrypt.compare(password,user.password);
         
@@ -72,12 +71,12 @@ const login = async(req,res) => {
             user
         },"mama");
 
+        console.log(token)
         
 
         res.set('Set-Cookie', cookie.serialize('token',token, {
             httpOnly: true,
-            secure: false,
-            sameSite: 'lax',
+            secure: process.env.NODE_ENV === 'production',
             maxAge: 3600*24*30,
             path: '/'
         }))

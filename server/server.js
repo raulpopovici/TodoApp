@@ -3,8 +3,7 @@ const express = require("express");
 
 const cors = require("cors");
 const userRouter = require("./routes/users");
-
-
+const todoRoutes = require("./routes/todos")
 const app = express();
 
 app.use(express.json());
@@ -17,13 +16,11 @@ app.use(
     })
 );
 
-
-
-app.get("/", (req,res)=> {return res.status(200).send({hello: "HEllo"})})
-
 app.use("/api",userRouter);
+app.use("/api/todos",todoRoutes);
 
 app.listen(5000,()=>{
     console.log("Server running on port 5000")
 });
+
 
