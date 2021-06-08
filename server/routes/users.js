@@ -57,7 +57,7 @@ const login = async(req,res) => {
 
     try {
 
-        const dbRes = await pool.query("SELECT user_id,username,email FROM users WHERE username = $1",[username]);
+        const dbRes = await pool.query("SELECT * FROM users WHERE username = $1",[username]);
         const user = dbRes.rows[0];
         const hashPassword = await bcrypt.compare(password,user.password);
         
