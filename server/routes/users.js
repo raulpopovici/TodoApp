@@ -69,7 +69,7 @@ const login = async(req,res) => {
 
         const token = jwt.sign({
             user
-        },"mama");
+        },process.env.JWT_SECRET);
 
         console.log(token)
         

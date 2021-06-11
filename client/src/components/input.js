@@ -1,5 +1,6 @@
 import React,{Fragment,useState} from "react";
 import axios from "axios";
+import {Link} from 'react-router-dom'
 
 const Input = () =>{
 
@@ -37,6 +38,10 @@ const Input = () =>{
 
             <button className = "btn btn-success" > Register </button>
         </form>
+
+       <Link to =  '/login'>
+           LOGIN
+       </Link>
 
     </Fragment>
     )
