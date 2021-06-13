@@ -102,15 +102,27 @@ const logout = async(req,res) => {
     );
 
     return res.status(200).json({ success: true });
+}
 
+const me = async(req,res) => {
+    try {
+        const token = req.cookies.token;
+        if(!token) return res.status(200).send({auth: false, user: null});
+
+        const {user} = jwt.verify(token,process.env.JWT_SECRET);
+        const dbRes = await pool.query("SELECT user_id,username,email FROM users WHERE username = $1",[user.username]);
+
+        return res.status(200).send({auth:true,user: dbRes.rows[0]});
+    } catch (err) {
+        return res.status(500).send({error: "problem on me"})
+    }
 }
 
 const router = Router();
 
 router.post('/register',createUser);
-
 router.post("/login",login);
-
 router.get("/logout",logout);
+router.get("/me",me);
 
 module.exports = router;

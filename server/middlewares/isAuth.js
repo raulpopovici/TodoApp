@@ -7,7 +7,7 @@ const isAuth = async (req,res,next) => {
         if(!token) return res.status(401).json({error: 'Not authenticated'})
         
 
-        const {user} = jwt.verify(token,"mama");
+        const {user} = jwt.verify(token,process.env.JWT_SECRET);
         const dbRes = await pool.query("SELECT user_id,username,email FROM users WHERE username = $1",[user.username]);
         
 
